@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>단어 외우기</title>
+  </head>
+  <body>
+    <header>
+      <h1 id="title">VocaMax</h1>
+      <nav>
+        <ul>
+          <li class="anker">
+            <a href="" id="memorize">단어암기</a>
+          </li>
+          <li class="anker">
+            <a href="" id="test">테스트</a>
+          </li>
+          <li class="space">
+          </li>
+          <li class="anker">
+            <label id="fileInput">파일 넣기<input type="file" id="fileInput"></label>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      
+      <br>
+      <p>
+        <input type="radio" name="choose" value="1" checked>영어
+        <input type="radio" name="choose" value="2">한글
+        <input type="radio" name="choose" value="3">랜덤
+      </p>
+      <p id="displayQuestion">문제: <span id="question">&nbsp;</span></p>
+      <input type="text" id="userInput" placeholder="정답을 입력하세요" readonly>
+      <div id="printResult">&nbsp;</div>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

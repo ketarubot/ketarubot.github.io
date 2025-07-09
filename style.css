@@ -1,0 +1,101 @@
+header {
+  width: 1710px;
+  height: 85px;
+  flex-shrink: 0;
+  border-radius: 0px 50px 50px 15px;
+  background: #D7ED90;
+  align-items: center;
+  display: flex;
+}
+
+html * {
+  margin: 0;
+}
+
+main > * {
+  margin: 30px;
+  display: block;
+}
+
+input#fileInput {
+  display: none;
+}
+
+label#fileInput {
+  border: 1px solid black;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+#title {
+  display: inline-flex;
+  width: 214px;
+  height: 85px;
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #000;
+  text-align: center;
+  font-family: "Apple SD Gothic Neo";
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  text-shadow: 
+    2px 2px 1px #fff,
+    -2px -2px 1px #fff,
+    2px -2px 1px #fff,
+    -2px 2px 1px #fff;
+}
+
+nav {
+  display: inline-flex;
+  width: 800px;
+  height: 85px;
+  align-items: center;
+}
+
+.anker {
+  border-radius: 50px;
+  transition: transform 0.4s ease, 
+    background-color 0.3s ease;
+  text-align: center;
+  display: inline-flex;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-left: 80px;
+  cursor: pointer;
+}
+
+a {
+  transition: text-shadow 0.3s ease,
+    color 0.3s ease;
+  color: #CEA1A1;
+  text-decoration: none;
+  font-family: "Apple SD Gothic Neo";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #c67b7b;
+}
+
+.anker:hover {
+  background: #C2D77D;
+  transform: scale(1.25);
+  box-shadow: 0px 0px 6px #C2D77D;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  justify-content: center;
+}
