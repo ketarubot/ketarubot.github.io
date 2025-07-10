@@ -163,4 +163,7 @@ fileInput.addEventListener('change', (e) => {main(e.target.files[0])});
 
 function toggleMenu() {
   document.getElementById('sideMenu').classList.toggle('open');
+  document.getElementById('menuBackground').classList.toggle('open');
 }
+
+  responsiveVoice.speak('hi');

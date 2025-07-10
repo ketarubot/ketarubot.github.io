@@ -24,14 +24,18 @@
             <a href="" id="word">등록된 단어</a>
           </li>
           <li class="anker" onclick="toggleMenu()">
-            <span class="toggleMenu">파일 관리</span>
+            <span class="toggleMenu">파일 등록</span>
           </li>
         </ul>
       </nav>
     </header>
     <menu>
       <div id="sideMenu">
-        <label id="fileInput">파일 넣기<input type="file" id="fileInput" accept=".txt"></label>
+        <span id="menuOff" onclick="toggleMenu()">&times;</span>
+          <p>
+            단어와 뜻이 '/'로 구분된 .txt 파일을 업로드해주세요.<br>
+          </p>
+          <label id="fileInput">파일 넣기<input type="file" id="fileInput" accept=".txt"></label>
       </div>
     </menu>
     <main>
@@ -47,6 +51,9 @@
       <div id="printResult">&nbsp;</div>
     </main>
 
+    <div id="menuBackground" onclick="toggleMenu()">&nbsp;</div>
+
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=prrushre"></script>
     <script src="script.js"></script>
   </body>
 </html>
