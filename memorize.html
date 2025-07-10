@@ -40,6 +40,15 @@
     </menu>
     <main>
       
+      <br>
+      <p>
+        <input type="radio" name="choose" value="1" checked>영어
+        <input type="radio" name="choose" value="2">한글
+        <input type="radio" name="choose" value="3">랜덤
+      </p>
+      <p id="displayQuestion">문제: <span id="question">&nbsp;</span></p>
+      <input type="text" id="userInput" placeholder="정답을 입력하세요" readonly>
+      <div id="printResult">&nbsp;</div>
     </main>
 
     <div id="menuBackground" onclick="toggleMenu()">&nbsp;</div>

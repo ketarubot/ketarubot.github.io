@@ -166,4 +166,4 @@ function toggleMenu() {
   document.getElementById('menuBackground').classList.toggle('open');
 }
 
-  responsiveVoice.speak('hi');
+// responsiveVoice.speak('hi');
