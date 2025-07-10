@@ -1,5 +1,5 @@
 header {
-  width: 1710px;
+  width: 100vw;
   height: 85px;
   flex-shrink: 0;
   border-radius: 0px 50px 50px 15px;
@@ -25,6 +25,13 @@ label#fileInput {
   border: 1px solid black;
   border-radius: 15px;
   padding: 10px;
+  text-decoration: none;
+  font-family: "Apple SD Gothic Neo";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  height: 24px;
+  width: 80px;
 }
 
 #title {
@@ -58,27 +65,29 @@ nav {
 .anker {
   border-radius: 50px;
   transition: transform 0.4s ease, 
-    background-color 0.3s ease;
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
   text-align: center;
   display: inline-flex;
   padding: 10px;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-left: 80px;
+  margin-left: 3vw;
   cursor: pointer;
+  border: 0.2px solid #D7ED90;
 }
 
 a {
-  transition: text-shadow 0.3s ease,
-    color 0.3s ease;
+  transition: color 0.3s ease;
   color: #CEA1A1;
   text-decoration: none;
   font-family: "Apple SD Gothic Neo";
   font-size: 20px;
   font-style: normal;
   font-weight: 600;
-  line-height: normal;
+  height: 24px;
+  width: 100px;
 }
 
 a:hover {
@@ -88,7 +97,7 @@ a:hover {
 
 .anker:hover {
   background: #C2D77D;
-  transform: scale(1.25);
+  transform: scale(1.1);
   box-shadow: 0px 0px 6px #C2D77D;
 }
 
@@ -98,4 +107,38 @@ nav ul {
   padding: 0;
   display: inline-flex;
   justify-content: center;
+}
+
+#space {
+  width: 40vw;
+  margin-left: 3vw;
+}
+
+#sideMenu {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+  background-color: #33333338;
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 60px;
+}
+
+.toggleMenu {
+  transition: color 0.3s ease;
+  color: #b32727;
+  text-decoration: none;
+  font-family: "Apple SD Gothic Neo";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  height: 24px;
+  width: 100px;
+}
+
+#sideMenu.open {
+  width: 250px;
 }

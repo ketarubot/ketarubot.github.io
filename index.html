@@ -17,14 +17,24 @@
           <li class="anker">
             <a href="" id="test">테스트</a>
           </li>
-          <li class="space">
+          <li id="space">
+            &nbsp;
           </li>
           <li class="anker">
-            <label id="fileInput">파일 넣기<input type="file" id="fileInput"></label>
+            <a href="" id="word">등록된 단어</a>
+          </li>
+          <li class="anker" onclick="toggleMenu()">
+            <span class="toggleMenu">파일 관리</span>
           </li>
         </ul>
       </nav>
     </header>
+    <menu>
+      
+      <div id="sideMenu">
+        <label id="fileInput">파일 넣기<input type="file" id="fileInput" accept=".txt"></label>
+      </div>
+    </menu>
     <main>
       
       <br>

@@ -160,3 +160,7 @@ function main(file) {
 
 const fileInput = document.getElementById('fileInput');
 fileInput.addEventListener('change', (e) => {main(e.target.files[0])});
+
+function toggleMenu() {
+  document.getElementById('sideMenu').classList.toggle('open');
+}
