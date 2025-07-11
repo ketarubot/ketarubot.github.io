@@ -20,9 +20,6 @@
           <li id="space">
             &nbsp;
           </li>
-          <li class="anker">
-            <a href="" id="word">등록된 단어</a>
-          </li>
           <li class="anker" onclick="toggleMenu()">
             <span class="toggleMenu">단어 관리</span>
           </li>
@@ -36,10 +33,37 @@
             단어와 뜻이 '/'로 구분된 .txt 파일을 업로드해주세요.<br>
           </p>
           <label id="fileInput">파일 넣기<input type="file" id="fileInput" accept=".txt"></label>
+          <button id="delete">저장된 단어 삭제</button>
+          <span>저장된 단어 리스트:</span>
+          <ol id="wordList">
+
+          </ol>
       </div>
     </menu>
     <main>
-      
+      문제 유형 선택:
+      <p>
+        <input type="radio" name="choose" value="1" checked>영어
+        <input type="radio" name="choose" value="2">한글
+        <input type="radio" name="choose" value="3">랜덤
+      </p>
+      <p>
+      정답 입력유형 선택:
+        <select id="answerInput" onchange="changeAnswerInput()">
+          <option value="1">직접 입력</option>
+          <option value="2">정답 선택</option>
+        </select>
+      </p>
+      <button id="testStart">테스트 시작하기</button>
+      <p id="displayQuestion">문제: <span id="question">&nbsp;</span></p>
+      <div id="answer">
+        <input class="" type="text" id="userInput" placeholder="정답을 입력하세요" readonly>
+        <ul class="" id="userSelect">
+          <li>hi</li>
+          <li>2</li>
+        </ul>
+      </div>
+      <div id="printResult">&nbsp;</div>
     </main>
 
     <div id="menuBackground" onclick="toggleMenu()">&nbsp;</div>
