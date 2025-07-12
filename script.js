@@ -110,7 +110,8 @@ async function separateQuestion() {
   if (weightedChoices.length === 0) {
     alert('모든 단어를 학습하셨습니다.');
     running = false;
-    testStart.style.display = 'block';
+    document.getElementById('testArea').style.display = 'block';
+    document.getElementById('testSetting').style.display = 'none';
     return;
   }
 
@@ -132,13 +133,19 @@ async function separateQuestion() {
     question = questionWord;
     correctAnswer = answer;
   }
-
-  await askQuestion(question, correctAnswer, remainingWords, questionWord);
-}
-
-async function askQuestion(question, correctAnswer, rws, qw) {
+  
   const displayQuestion = document.getElementById('question');
   displayQuestion.innerText = `'${question}': `;
+
+  const answerInputCategory = parseInt(document.getElementById('answerInput').value);
+  if (answerInputCategory === 1) {
+    await askQuestion(correctAnswer, remainingWords, questionWord);
+  } else if (answerInputCategory === 2) {
+    await generateAnswer(isEnglishQuestion, correctAnswer, remainingWords, questionWord);
+  }
+}
+
+async function askQuestion(correctAnswer, rws, qw) {
   const userInput = document.getElementById('userInput');
   userInput.removeAttribute('readonly');
   let userAnswer;
@@ -155,22 +162,18 @@ async function askQuestion(question, correctAnswer, rws, qw) {
   userInput.addEventListener('keydown', senseEnter);
   
   const waitForAnswer = () => {
-  return new Promise((resolve) => {
-    const interval = setInterval(() => {
-      if (checkUserAnswer) {
-        clearInterval(interval);
-        resolve();
-      }
-    }, 100);
-  });
-  }
+    return new Promise((resolve) => {
+      const interval = setInterval(() => {
+        if (checkUserAnswer) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, 100);
+    });
+  };
   await waitForAnswer();
   performance[1]++;
 
-  printResult(userAnswer, correctAnswer, rws, qw);
-}
-
-function printResult(userAnswer, correctAnswer, rws, qw) {
   const printResult = document.getElementById('printResult');
   if (isCorrect(userAnswer, correctAnswer)) {
     correct.add(qw);
@@ -188,6 +191,61 @@ function printResult(userAnswer, correctAnswer, rws, qw) {
   printResult.innerHTML += `<br>연속 정답 수: ${performance[0]}`;
   printResult.innerHTML += `<br>남은 문제 수: ${rws.length-1}`;
 }
+
+async function generateAnswer(isEnglishQuestion, correctAnswer, rws, qw) {
+  const userSelect = document.getElementById('userSelect');
+  while (userSelect.firstChild) {
+    userSelect.removeChild(userSelect.firstChild);
+  }
+  const answerCount = (Object.keys(wordDict).length / 10) + 1;
+  const answerType = isEnglishQuestion?'e':'k';
+  let answers = [...extract(wordDict, answerType, correctAnswer, answerCount), correctAnswer];
+  shuffle(answers);
+  let userSelected = false;
+  let isCorrect = false;
+  for (const answer of answers) {
+    const add = document.createElement('li');
+    add.textContent = answer;
+    if (answer === correctAnswer) add.id = 'correct';
+    add.addEventListener('click', () => {
+      if (add.id === 'correct') isCorrect = true;
+      userSelected = true;
+    });
+    userSelect.appendChild(add);
+    console.log('added.')
+  }
+
+  const waitForSelect = () => {
+    return new Promise((resolve) => {
+      const interval = setInterval(() => {
+        if (userSelected) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, 100);
+    });
+  };
+  await waitForSelect();
+  performance[1]++;
+
+  const printResult = document.getElementById('printResult');
+  if (isCorrect) {
+    correct.add(qw);
+    performance[0]++;
+    performance[2]++;
+    weights[qw] = Math.max(1, weights[qw] - 1);
+    printResult.innerText = `정답입니다!: '${correctAnswer}'`;
+  } else {
+    performance[0] = 0;
+    weights[qw]++;
+    printResult.innerText = `틀렸습니다. 정답은 '${qw}'입니다.`;
+  }
+  const accuracy = ((performance[2] / performance[1]) * 100).toFixed(2);
+  printResult.innerHTML += `<br>정답률: ${accuracy}%`;
+  printResult.innerHTML += `<br>연속 정답 수: ${performance[0]}`;
+  printResult.innerHTML += `<br>남은 문제 수: ${rws.length-1}`;
+}
+
 
 function changeAnswerInput() {
   const answerCategory = parseInt(document.getElementById('answerInput').value);
@@ -225,21 +283,6 @@ function toggleMenu() {
   }
 }
 
-const testStart = document.getElementById('testStart');
-testStart.addEventListener('click', () => {
-  if (lsgi('wordDict') && lsgi('weights')) {
-    wordDict = JSON.parse(lsgi('wordDict'));
-    weights = JSON.parse(lsgi('weights'));
-    fileRead = true;
-  }
-  if (fileRead === true) {
-    testStart.style.display = 'none';
-    chooseQuestion();
-  } else {
-    alert('읽힌 파일이 없습니다!');
-  }
-});
-
 function setWordList() {
   if (lsgi('wordDict')) {
     const words = JSON.parse(lsgi('wordDict'));
@@ -255,6 +298,24 @@ function setWordList() {
   }
 }
 
-changeAnswerInput();
+if (window.location.pathname.split('/').pop() === 'test.html') {
+  const testStart = document.getElementById('testStart');
+  testStart.addEventListener('click', () => {
+    if (lsgi('wordDict') && lsgi('weights')) {
+      wordDict = JSON.parse(lsgi('wordDict'));
+      weights = JSON.parse(lsgi('weights'));
+      fileRead = true;
+    }
+    if (fileRead === true) {
+      document.getElementById('testSetting').style.display = 'none';
+      document.getElementById('testArea').style.display = 'block';
+      chooseQuestion();
+    } else {
+      alert('읽힌 파일이 없습니다!');
+    }
+  });
+  
+  changeAnswerInput();
+}
 
 // responsiveVoice.speak('hi');

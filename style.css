@@ -40,6 +40,8 @@ label#fileInput {
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.3s ease;
+  text-align: center;
+  justify-content: center;
 }
 
 label#fileInput:hover {
@@ -167,7 +169,7 @@ nav ul {
 }
 
 #sideMenu.open * {
-  display: inline-flex;
+  display: flex;
   margin: 40px;
 }
 
@@ -211,12 +213,35 @@ main {
 #wordList {
   border: 1px solid black;
   flex-direction: column;
-  list-style: decimal inside;
   height: 60vh;
   overflow: scroll;
   padding: 0;
+  margin: 0px 40px !important;
+  border-radius: 10px;
+  display: block !important;
 }
 
 #wordList li {
   margin: 5px !important;
+  display: block !important;
+  list-style: decimal inside;
+}
+
+#delete {
+  justify-self: center;
+  margin-bottom: 20px !important;
+}
+
+#userSelect li {
+  border: 1px solid black;
+  padding: 2px;
+  margin: 5px;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  list-style: none inside;
+}
+
+#userSelect li:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 0px 2px black;
 }
