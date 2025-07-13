@@ -294,3 +294,8 @@ main {
 .block {
   background-color: black;
 }
+
+#displayQuestion {
+  font-size: 24px;
+  font-weight: 600;
+}

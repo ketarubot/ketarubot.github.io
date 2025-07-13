@@ -59,7 +59,7 @@ async function chooseQuestion() {
   running = true;
   while (running) {
     await separateQuestion();
-    await sleep(500);
+    await sleep(1000);
   }
 }
 
@@ -204,6 +204,8 @@ async function askQuestion(correctAnswer, rws, qw) {
 }
 
 async function generateAnswer(isEnglishQuestion, correctAnswer, rws, qw) {
+  const printResult = document.getElementById('printResult');
+  removeChilds(printResult);
   const userSelect = document.getElementById('userSelect');
   removeChilds(userSelect);
   const answerCount = (Object.keys(wordDict).length / 10) + 1;
@@ -237,7 +239,8 @@ async function generateAnswer(isEnglishQuestion, correctAnswer, rws, qw) {
   await waitForSelect();
   performance[1]++;
 
-  const printResult = document.getElementById('printResult');
+  removeChilds(userSelect);
+
   if (isCorrect) {
     correct.add(qw);
     performance[0]++;
