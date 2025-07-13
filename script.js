@@ -110,8 +110,8 @@ async function separateQuestion() {
   if (weightedChoices.length === 0) {
     alert('모든 단어를 학습하셨습니다.');
     running = false;
-    document.getElementById('testArea').style.display = 'block';
-    document.getElementById('testSetting').style.display = 'none';
+    document.getElementById('testArea').style.display = 'none';
+    document.getElementById('testSetting').style.display = 'block';
     return;
   }
 
@@ -124,10 +124,11 @@ async function separateQuestion() {
   } else {
     isEnglishQuestion = english;
   }
-
+  
+  const answerInputCategory = parseInt(document.getElementById('answerInput').value);
   let question = '', correctAnswer = '';
   if (isEnglishQuestion) {
-    question = answer + `[${questionWord[0]}]`;
+    question = answer + (answerInputCategory===1?`[${questionWord[0]}]`:'');
     correctAnswer = questionWord;
   } else {
     question = questionWord;
@@ -137,7 +138,6 @@ async function separateQuestion() {
   const displayQuestion = document.getElementById('question');
   displayQuestion.innerText = `'${question}': `;
 
-  const answerInputCategory = parseInt(document.getElementById('answerInput').value);
   if (answerInputCategory === 1) {
     await askQuestion(correctAnswer, remainingWords, questionWord);
   } else if (answerInputCategory === 2) {
@@ -298,7 +298,10 @@ function setWordList() {
   }
 }
 
-if (window.location.pathname.split('/').pop() === 'test.html') {
+const currentPage = window.location.pathname.split('/').pop();
+
+if (currentPage === 'test.html') {
+  document.getElementById('testArea').style.display = 'none';
   const testStart = document.getElementById('testStart');
   testStart.addEventListener('click', () => {
     if (lsgi('wordDict') && lsgi('weights')) {
@@ -308,7 +311,7 @@ if (window.location.pathname.split('/').pop() === 'test.html') {
     }
     if (fileRead === true) {
       document.getElementById('testSetting').style.display = 'none';
-      document.getElementById('testArea').style.display = 'block';
+      document.getElementById('testArea').style.display = 'flex';
       chooseQuestion();
     } else {
       alert('읽힌 파일이 없습니다!');
@@ -318,4 +321,42 @@ if (window.location.pathname.split('/').pop() === 'test.html') {
   changeAnswerInput();
 }
 
-// responsiveVoice.speak('hi');
+function toggle(type, id) {
+  document.getElementById(type+id).classList.toggle('block');
+}
+
+function setMemorizeList() {
+  if (lsgi('wordDict')) {
+    wordDict = JSON.parse(lsgi('wordDict'));
+    const words = Object.keys(wordDict);
+    const meanings = Object.values(wordDict);
+    const wordsList = document.getElementById('words');
+    const meaningsList = document.getElementById('meanings');
+    for (let i = 0; i < words.length; i++) {
+      const wAdd = document.createElement('li');
+      const mAdd = document.createElement('li');
+      wAdd.innerHTML = `<span id="w${i}">${words[i]}</span>`;
+      mAdd.innerHTML = `<span id="m${i}">${meanings[i]}</span>`;
+      wordsList.appendChild(wAdd);
+      meaningsList.appendChild(mAdd);
+
+      const wToggle = document.createElement('button');
+      const mToggle = document.createElement('button');
+      wToggle.innerText = '가리기/표시하기';
+      wToggle.addEventListener('click', () => {toggle('w', i)});
+      mToggle.innerText = '가리기/표시하기';
+      mToggle.addEventListener('click', () => {toggle('m', i)});
+      wAdd.appendChild(wToggle);
+      mAdd.appendChild(mToggle);
+
+      const wRead = document.createElement('button');
+      wRead.innerText = '발음 듣기';
+      wRead.addEventListener('click', () => {responsiveVoice.speak(words[i], 'US English Female', {rate: 0.8, pitch: 1.2})});
+      wAdd.appendChild(wRead);
+    }
+  }
+}
+
+if (currentPage === 'memorize.html') {
+  setMemorizeList();
+}

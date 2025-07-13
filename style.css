@@ -22,7 +22,7 @@ body {
 
 main > * {
   margin: 30px;
-  display: block;
+  display: flex;
 }
 
 input#fileInput {
@@ -244,4 +244,53 @@ main {
 #userSelect li:hover {
   transform: scale(1.05);
   box-shadow: 0px 0px 2px black;
+}
+
+#testArea, #testSetting {
+  width: 75vw;
+  height: 60vh;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 40px;
+  padding: 80px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+#userSelect {
+  padding: 20px;
+}
+
+#welcome {
+  width: 75vw;
+  height: 60vh;
+  background-color: white;
+  border-radius: 40px;
+  padding: 80px;
+}
+
+#memorizeArea {
+  width: 75vw;
+  height: 60vh;
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 80px;
+  border-radius: 40px;
+  overflow-y: auto;
+}
+
+#memorizeArea ul {
+  list-style: none;
+}
+
+main {
+  padding: 20px;
+}
+
+.block {
+  background-color: black;
 }

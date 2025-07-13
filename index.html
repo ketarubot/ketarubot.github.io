@@ -29,11 +29,21 @@
     <menu>
       <div id="sideMenu">
         <span id="menuOff" onclick="toggleMenu()">&times;</span>
+          <p>
+            단어와 뜻이 '/'로 구분된 .txt 파일을 업로드해주세요.
+          </p>
           <label id="fileInput">파일 넣기<input type="file" id="fileInput" accept=".txt"></label>
+          저장된 단어 리스트:
+          <ol id="wordList">
+            
+          </ol>
+          <button id="delete">저장된 단어 삭제</button>
       </div>
     </menu>
     <main>
-      
+      <div id="welcome">
+        <h1>당신의 단어학습을 도와줄 서비스, VocaMax!</h1>
+      </div>
     </main>
 
     <div id="menuBackground" onclick="toggleMenu()">&nbsp;</div>
