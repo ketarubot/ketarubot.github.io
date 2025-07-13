@@ -8,6 +8,12 @@ let running = false;
 let fileRead = false;
 const lsgi = localStorage.getItem.bind(localStorage);
 
+function removeChilds(element) {
+  while (element.firstChild) {
+    element.removeChild(element.firstChild);
+  }
+}
+
 function readFile(file) {
   const reader = new FileReader();
 
@@ -22,6 +28,7 @@ function readFile(file) {
     localStorage.setItem('wordDict', JSON.stringify(wordDict));
     localStorage.setItem('weights', JSON.stringify(weights));
     setWordList();
+    setMemorizeList();
     fileRead = true;
   }
   reader.readAsText(file);
@@ -36,6 +43,10 @@ function reset() {
   fileRead = false;
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function chooseQuestion() {
   const category = parseInt(document.querySelector('input[name="choose"]:checked').value);
   if (category === 1) {
@@ -48,6 +59,7 @@ async function chooseQuestion() {
   running = true;
   while (running) {
     await separateQuestion();
+    await sleep(500);
   }
 }
 
@@ -108,7 +120,6 @@ async function separateQuestion() {
   }
 
   if (weightedChoices.length === 0) {
-    alert('모든 단어를 학습하셨습니다.');
     running = false;
     document.getElementById('testArea').style.display = 'none';
     document.getElementById('testSetting').style.display = 'block';
@@ -184,7 +195,7 @@ async function askQuestion(correctAnswer, rws, qw) {
   } else {
     performance[0] = 0;
     weights[qw]++;
-    printResult.innerText = `틀렸습니다. 정답은 '${qw}'입니다.`;
+    printResult.innerText = `틀렸습니다. 정답은 '${correctAnswer}'입니다.`;
   }
   const accuracy = ((performance[2] / performance[1]) * 100).toFixed(2);
   printResult.innerHTML += `<br>정답률: ${accuracy}%`;
@@ -194,9 +205,7 @@ async function askQuestion(correctAnswer, rws, qw) {
 
 async function generateAnswer(isEnglishQuestion, correctAnswer, rws, qw) {
   const userSelect = document.getElementById('userSelect');
-  while (userSelect.firstChild) {
-    userSelect.removeChild(userSelect.firstChild);
-  }
+  removeChilds(userSelect);
   const answerCount = (Object.keys(wordDict).length / 10) + 1;
   const answerType = isEnglishQuestion?'e':'k';
   let answers = [...extract(wordDict, answerType, correctAnswer, answerCount), correctAnswer];
@@ -238,14 +247,13 @@ async function generateAnswer(isEnglishQuestion, correctAnswer, rws, qw) {
   } else {
     performance[0] = 0;
     weights[qw]++;
-    printResult.innerText = `틀렸습니다. 정답은 '${qw}'입니다.`;
+    printResult.innerText = `틀렸습니다. 정답은 '${correctAnswer}'입니다.`;
   }
   const accuracy = ((performance[2] / performance[1]) * 100).toFixed(2);
   printResult.innerHTML += `<br>정답률: ${accuracy}%`;
   printResult.innerHTML += `<br>연속 정답 수: ${performance[0]}`;
   printResult.innerHTML += `<br>남은 문제 수: ${rws.length-1}`;
 }
-
 
 function changeAnswerInput() {
   const answerCategory = parseInt(document.getElementById('answerInput').value);
@@ -276,9 +284,8 @@ function toggleMenu() {
     document.getElementById('delete').addEventListener('click', () => {
       localStorage.clear()
       const wordList = document.getElementById('wordList');
-      while (wordList.firstChild) {
-        wordList.removeChild(wordList.firstChild);
-      }
+      removeChilds(wordList);
+      setMemorizeList();
     });
   }
 }
@@ -287,14 +294,13 @@ function setWordList() {
   if (lsgi('wordDict')) {
     const words = JSON.parse(lsgi('wordDict'));
     const wordList = document.getElementById('wordList');
-    while (wordList.firstChild) {
-      wordList.removeChild(wordList.firstChild);
-    }
+    removeChilds(wordList);
     for (const [word, meaning] of Object.entries(words)) {
       const add = document.createElement('li');
       add.innerText = `${word}: ${meaning}`;
       wordList.appendChild(add);
     }
+    setMemorizeList();
   }
 }
 
@@ -326,37 +332,40 @@ function toggle(type, id) {
 }
 
 function setMemorizeList() {
-  if (lsgi('wordDict')) {
-    wordDict = JSON.parse(lsgi('wordDict'));
-    const words = Object.keys(wordDict);
-    const meanings = Object.values(wordDict);
+  if (currentPage === 'memorize.html') {
     const wordsList = document.getElementById('words');
     const meaningsList = document.getElementById('meanings');
-    for (let i = 0; i < words.length; i++) {
-      const wAdd = document.createElement('li');
-      const mAdd = document.createElement('li');
-      wAdd.innerHTML = `<span id="w${i}">${words[i]}</span>`;
-      mAdd.innerHTML = `<span id="m${i}">${meanings[i]}</span>`;
-      wordsList.appendChild(wAdd);
-      meaningsList.appendChild(mAdd);
-
-      const wToggle = document.createElement('button');
-      const mToggle = document.createElement('button');
-      wToggle.innerText = '가리기/표시하기';
-      wToggle.addEventListener('click', () => {toggle('w', i)});
-      mToggle.innerText = '가리기/표시하기';
-      mToggle.addEventListener('click', () => {toggle('m', i)});
-      wAdd.appendChild(wToggle);
-      mAdd.appendChild(mToggle);
-
-      const wRead = document.createElement('button');
-      wRead.innerText = '발음 듣기';
-      wRead.addEventListener('click', () => {responsiveVoice.speak(words[i], 'US English Female', {rate: 0.8, pitch: 1.2})});
-      wAdd.appendChild(wRead);
+    if (lsgi('wordDict')) {
+      wordDict = JSON.parse(lsgi('wordDict'));
+      const words = Object.keys(wordDict);
+      const meanings = Object.values(wordDict);
+      for (let i = 0; i < words.length; i++) {
+        const wAdd = document.createElement('li');
+        const mAdd = document.createElement('li');
+        wAdd.innerHTML = `<span id="w${i}">${words[i]}</span>`;
+        mAdd.innerHTML = `<span id="m${i}">${meanings[i]}</span>`;
+        wordsList.appendChild(wAdd);
+        meaningsList.appendChild(mAdd);
+  
+        const wToggle = document.createElement('button');
+        const mToggle = document.createElement('button');
+        wToggle.innerText = '가리기/표시하기';
+        wToggle.addEventListener('click', () => {toggle('w', i)});
+        mToggle.innerText = '가리기/표시하기';
+        mToggle.addEventListener('click', () => {toggle('m', i)});
+        wAdd.appendChild(wToggle);
+        mAdd.appendChild(mToggle);
+  
+        const wRead = document.createElement('button');
+        wRead.innerText = '발음 듣기';
+        wRead.addEventListener('click', () => {responsiveVoice.speak(words[i], 'US English Female', {rate: 0.8, pitch: 1.2})});
+        wAdd.appendChild(wRead);
+      }
+    } else {
+      removeChilds(wordsList);
+      removeChilds(meaningsList);
     }
   }
 }
 
-if (currentPage === 'memorize.html') {
-  setMemorizeList();
-}
+setMemorizeList();
